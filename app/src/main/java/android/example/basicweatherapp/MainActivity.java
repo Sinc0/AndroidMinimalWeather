@@ -15,7 +15,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.text.DecimalFormat;
 import java.lang.Math;
 
 public class MainActivity extends AppCompatActivity {
@@ -33,9 +32,10 @@ public class MainActivity extends AppCompatActivity {
     String temperature;
     String feelsLike;
     String humidity;
-    String airFeels = "asdf";
+    String airFeels;
     String description;
     String celsius;
+    String country;
 
     int humidityInt = 0;
     int celsiusInt = 0;
@@ -46,8 +46,6 @@ public class MainActivity extends AppCompatActivity {
 
     Toast toastCityNotFound;
 
-    DecimalFormat decimals2;
-
     public void DownloadWeatherData()
     {
         DownloadTask downloadTask = new DownloadTask();
@@ -56,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void onClickWeatherInfo(View v)
     {
+
         editTextString = editTextEnterWeatherLocation.getText().toString();
 
         weatherLocation = editTextString;
@@ -99,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
                 return  null;
             }
+
         }
 
         @Override
@@ -110,9 +110,11 @@ public class MainActivity extends AppCompatActivity {
                 JSONObject jsonObject = new JSONObject(s);
                 String weatherInfo = jsonObject.getString("weather");
                 String mainInfo = jsonObject.getString("main");
+                String sysInfo = jsonObject.getString("sys");
 
                 Log.i("JSON Weather Content", weatherInfo);
                 Log.i("JSON Main Content", mainInfo);
+                Log.i("JSON Sys Content", sysInfo);
 
                 JSONArray arrayWeatherInfo = new JSONArray(weatherInfo);
 
@@ -154,6 +156,7 @@ public class MainActivity extends AppCompatActivity {
                 celsius = Integer.toString(celsiusInt);
                 feelsLike = Integer.toString(feelsLikeInt);
 
+                //sets air feel based on humidity number
                 if (humidityInt <= 20)
                 {
                     airFeels = "Dry";
@@ -169,13 +172,35 @@ public class MainActivity extends AppCompatActivity {
                     airFeels =  "Wet";
                 }
 
+                //sets background based on celsius number
+                if (celsiusInt < 10)
+                {
+                    getWindow().setBackgroundDrawableResource(R.drawable.cold);
+                }
+
+                if (celsiusInt > 10 && celsiusInt <= 20)
+                {
+                    getWindow().setBackgroundDrawableResource(R.drawable.normal);
+                }
+
+                if (celsiusInt > 20)
+                {
+                    getWindow().setBackgroundDrawableResource(R.drawable.sun);
+                }
+
+                JSONObject sysHolder = jsonObject.getJSONObject("sys");
+                country = sysHolder.getString("country");
+
+                textViewDisplayWeatherInfo.setVisibility(View.VISIBLE);
+
                 textViewDisplayWeatherInfo.setText
                 (
-                    "Status: " + description + "\n" +
                     "Temperature: " + celsius + "°" + "\n" +
                     "Feels like: " + feelsLike + "°" + "\n" +
-                    "Humidity: " + humidity + "\n" +
-                    "Air: " + airFeels
+                    "Humidity: " + humidity + "%" + "\n" +
+                    "Status: " + description + "\n" +
+                    "Air: " + airFeels + "\n" +
+                    "Country: " + country
                 );
 
             }
@@ -197,6 +222,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        getWindow().setBackgroundDrawableResource(R.drawable.mainbackground);
 
         buttonWeatherInfo = findViewById(R.id.buttonWeatherInfo);
         editTextEnterWeatherLocation = findViewById(R.id.editTextEnterWeatherLocation);

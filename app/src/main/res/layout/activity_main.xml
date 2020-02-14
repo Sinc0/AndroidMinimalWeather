@@ -7,50 +7,56 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
     tools:context=".MainActivity">
+    <!-- android:background="#FFFFFF" -->
 
-    <Button
-        android:id="@+id/buttonWeatherInfo"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@android:color/darker_gray"
-        android:onClick="onClickWeatherInfo"
-        android:padding="10dp"
-        android:text="Load Data"
-        android:textColor="@android:color/black"
+        android:background="#FFFFFF"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <EditText
-        android:id="@+id/editTextEnterWeatherLocation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:ems="10"
-        android:gravity="center"
-        android:hint="Enter Weather Location"
-        android:inputType="textPersonName"
-        android:padding="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonWeatherInfo" />
+        <EditText
+            android:id="@+id/editTextEnterWeatherLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="25dp"
+            android:ems="10"
+            android:gravity="center"
+            android:hint="Enter Weather Location"
+            android:inputType="textPersonName"
+            android:padding="10dp"
+            android:textColorHint="@android:color/black" />
 
-    <TextView
-        android:id="@+id/textViewDisplayWeatherInfo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="Weather Info Here\nWeather Info Here\nWeather Info Here"
-        android:textColor="@android:color/black"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextEnterWeatherLocation" />
+        <Button
+            android:id="@+id/buttonWeatherInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/darker_gray"
+            android:onClick="onClickWeatherInfo"
+            android:paddingLeft="20dp"
+            android:paddingTop="10dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="10dp"
+            android:text="Load Weather"
+            android:textColor="@android:color/black" />
+
+        <TextView
+            android:id="@+id/textViewDisplayWeatherInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:text="Weather Info Here"
+            android:textColor="@android:color/black"
+            android:textSize="24sp"
+            android:visibility="visible" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
