@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
 
         weatherLocation = editTextString;
 
-        downloadUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + weatherLocation + ak;
+        downloadUrl = "https://api.openweathermap.org/data/2.5?q/weather=" + weatherLocation + ak;
 
         DownloadWeatherData();
 
