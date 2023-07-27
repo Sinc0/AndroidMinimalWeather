@@ -1,6 +1,7 @@
 //name
 package android.example.basicweatherapp;
 
+
 //includes
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.AsyncTask;
@@ -19,6 +20,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.lang.Math;
 
+
 //main
 public class MainActivity extends AppCompatActivity {
 
@@ -28,11 +30,11 @@ public class MainActivity extends AppCompatActivity {
     TextView textViewDisplayWeatherInfo;
     Toast toastCityNotFound;
 
+
     //variables
     String editTextString;
     String downloadUrl;
     String weatherLocation;
-    String ak = "&appid=f394e4fb836c1332f30df5d91d30d9ab";
     String temperature;
     String feelsLike;
     String humidity;
@@ -40,11 +42,15 @@ public class MainActivity extends AppCompatActivity {
     String description;
     String celsius;
     String country;
+    String API_Key = "f394e4fb836c1332f30df5d91d30d9ab";
+    //String API_URL = "https://api.openweathermap.org/data/2.5?q/weather=";
+    String API_URL = "https://api.openweathermap.org/data/2.5/weather?q=";
     int humidityInt = 0;
     int celsiusInt = 0;
     int feelsLikeInt = 0;
     double temperatureDouble = 0;
     double feelsLikeDouble = 0;
+
 
     //functions
     public void DownloadWeatherData()
@@ -58,13 +64,15 @@ public class MainActivity extends AppCompatActivity {
         //variables
         editTextString = editTextEnterWeatherLocation.getText().toString();
         weatherLocation = editTextString;
-        downloadUrl = "https://api.openweathermap.org/data/2.5?q/weather=" + weatherLocation + ak;
+        downloadUrl = API_URL + weatherLocation + "&appid=" + API_Key;
 
+        //fetch weather data
         DownloadWeatherData();
 
         //log
         Log.i("Tag", "Weather Info Button Pressed");
     }
+
 
     //classes
     public class DownloadTask extends AsyncTask<String, Void, String>
@@ -84,8 +92,10 @@ public class MainActivity extends AppCompatActivity {
             {
                 url = new URL(urls[0]);
                 urlConnection = (HttpURLConnection) url.openConnection();
+
                 InputStream inputStream = urlConnection.getInputStream();
                 InputStreamReader inputReader = new InputStreamReader(inputStream);
+
                 int data = inputReader.read();
 
                 while (data != -1)
@@ -100,9 +110,8 @@ public class MainActivity extends AppCompatActivity {
             catch (Exception e)
             {
                 e.printStackTrace();
-                return  null;
+                return null;
             }
-
         }
 
         @Override
@@ -112,15 +121,18 @@ public class MainActivity extends AppCompatActivity {
             //try parse data
             try
             {
+                //variables
                 JSONObject jsonObject = new JSONObject(s);
                 String weatherInfo = jsonObject.getString("weather");
                 String mainInfo = jsonObject.getString("main");
                 String sysInfo = jsonObject.getString("sys");
 
+                //log
                 Log.i("JSON Weather Content", weatherInfo);
                 Log.i("JSON Main Content", mainInfo);
                 Log.i("JSON Sys Content", sysInfo);
 
+                //set weather info array
                 JSONArray arrayWeatherInfo = new JSONArray(weatherInfo);
 
                 //sort JSON weather content
@@ -129,9 +141,7 @@ public class MainActivity extends AppCompatActivity {
                     JSONObject weatherHolder = arrayWeatherInfo.getJSONObject(i);
 
                     description = weatherHolder.getString("description");
-
                     description = description.substring(0,1).toUpperCase() + description.substring(1).toLowerCase();
-
                 }
 
                 //sort JSON content
@@ -153,15 +163,15 @@ public class MainActivity extends AppCompatActivity {
                 celsius = Integer.toString(celsiusInt); //from int to string
                 feelsLike = Integer.toString(feelsLikeInt); //from int to string
 
-                //set airFeels
+                //set air feels like
                 if (humidityInt <= 20) { airFeels = "Dry"; }
-                if (humidityInt >= 20 && humidityInt <= 60) { airFeels = "Normal"; }
-                if (humidityInt >= 60 && humidityInt > 60) { airFeels =  "Wet"; }
+                else if (humidityInt >= 20 && humidityInt <= 60) { airFeels = "Normal"; }
+                else if (humidityInt >= 60 && humidityInt > 60) { airFeels =  "Wet"; }
 
-                //sets image background based on celsius number
+                //set background image
                 if (celsiusInt < 10) { getWindow().setBackgroundDrawableResource(R.drawable.cold); }
-                if (celsiusInt > 10 && celsiusInt <= 20) { getWindow().setBackgroundDrawableResource(R.drawable.normal); }
-                if (celsiusInt > 20) { getWindow().setBackgroundDrawableResource(R.drawable.sun); }
+                else if (celsiusInt > 10 && celsiusInt <= 20) { getWindow().setBackgroundDrawableResource(R.drawable.normal); }
+                else if (celsiusInt > 20) { getWindow().setBackgroundDrawableResource(R.drawable.sun); }
 
                 //set country
                 JSONObject sysHolder = jsonObject.getJSONObject("sys");
@@ -184,9 +194,12 @@ public class MainActivity extends AppCompatActivity {
             }
             catch (Exception e)
             {
+                //error message
                 e.printStackTrace();
                 Log.i("Tag", "City not found");
                 toastCityNotFound.show();
+
+                //reset weather info
                 textViewDisplayWeatherInfo.setText("");
             }
         }
