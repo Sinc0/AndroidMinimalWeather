@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <androidx.constraintlayout.widget.ConstraintLayout
-
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -11,52 +10,68 @@
     <!-- android:background="#FFFFFF" -->
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="#FFFFFF"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@android:color/transparent"
         android:gravity="center"
         android:orientation="vertical"
-        android:padding="30dp"
+        android:padding="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.029">
 
         <EditText
             android:id="@+id/editTextEnterWeatherLocation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="25dp"
-            android:ems="10"
+            android:layout_width="400dp"
+            android:layout_height="49dp"
+            android:background="@android:color/black"
             android:gravity="center"
-            android:hint="Enter Weather Location"
+            android:hint="Location..."
+            android:imeOptions="actionDone"
             android:inputType="textPersonName"
-            android:padding="10dp"
-            android:textColorHint="@android:color/black" />
+            android:singleLine="true"
+            android:textColor="@android:color/white"
+            android:textColorHighlight="@android:color/white"
+            android:textColorHint="@android:color/white"
+            android:textColorLink="@android:color/white"
+            android:textSize="24sp" />
 
         <Button
             android:id="@+id/buttonWeatherInfo"
-            android:layout_width="wrap_content"
+            android:layout_width="400dp"
             android:layout_height="wrap_content"
-            android:background="@android:color/darker_gray"
+            android:background="@android:color/black"
             android:onClick="onClickWeatherInfo"
-            android:paddingLeft="20dp"
-            android:paddingTop="10dp"
-            android:paddingRight="20dp"
-            android:paddingBottom="10dp"
-            android:text="Load Weather"
-            android:textColor="@android:color/black" />
-
-        <TextView
-            android:id="@+id/textViewDisplayWeatherInfo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
-            android:text="Weather Info Here"
-            android:textColor="@android:color/black"
+            android:text="Load"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
             android:textSize="24sp"
-            android:visibility="visible" />
+            android:textStyle="bold"
+            android:visibility="gone" />
+
+        <ScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/textViewDisplayWeatherInfo"
+                android:layout_width="400dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:shadowColor="@color/text_shadow"
+                android:shadowDx="1"
+                android:shadowDy="1"
+                android:shadowRadius="2"
+                android:text=""
+                android:textColor="@android:color/white"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:visibility="visible" />
+            />
+        </ScrollView>
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
