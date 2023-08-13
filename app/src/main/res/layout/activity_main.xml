@@ -1,26 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                   xmlns:tools="http://schemas.android.com/tools"
+                                                   android:layout_width="match_parent"
+                                                   android:layout_height="match_parent"
+                                                   android:fadingEdge="vertical"
+                                                   tools:context=".MainActivity">
+                                                   <!-- android:background="#FFFFFF" -->
 
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
-    <!-- android:background="#FFFFFF" -->
-
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@android:color/transparent"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:padding="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.029">
+    <LinearLayout android:layout_width="0dp"
+                  android:layout_height="0dp"
+                  android:background="@android:color/transparent"
+                  android:gravity="center"
+                  android:orientation="vertical"
+                  android:padding="20dp"
+                  app:layout_constraintBottom_toBottomOf="parent"
+                  app:layout_constraintEnd_toEndOf="parent"
+                  app:layout_constraintStart_toStartOf="parent"
+                  app:layout_constraintTop_toTopOf="parent"
+                  app:layout_constraintVertical_bias="0.029">
 
         <EditText
             android:id="@+id/editTextEnterWeatherLocation"
@@ -36,24 +34,23 @@
             android:textColorHighlight="@android:color/white"
             android:textColorHint="@android:color/white"
             android:textColorLink="@android:color/white"
-            android:textSize="24sp" />
+            android:textSize="26sp" />
 
-        <Button
-            android:id="@+id/buttonWeatherInfo"
-            android:layout_width="400dp"
-            android:layout_height="wrap_content"
-            android:background="@android:color/black"
-            android:onClick="onClickWeatherInfo"
-            android:text="Load"
-            android:textAllCaps="false"
-            android:textColor="@android:color/white"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:visibility="gone" />
+        <!-- <Button android:id="@+id/buttonWeatherInfo"
+                android:layout_width="400dp"
+                android:layout_height="wrap_content"
+                android:background="@android:color/black"
+                android:onClick="onClickWeatherInfo"
+                android:text="Load"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:visibility="gone" /> -->
 
-        <ScrollView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+        <ScrollView android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scrollbars="none">
 
             <TextView
                 android:id="@+id/textViewDisplayWeatherInfo"
@@ -66,12 +63,9 @@
                 android:shadowRadius="2"
                 android:text=""
                 android:textColor="@android:color/white"
-                android:textSize="24sp"
+                android:textSize="26sp"
                 android:textStyle="bold"
                 android:visibility="visible" />
-            />
         </ScrollView>
-
     </LinearLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>
