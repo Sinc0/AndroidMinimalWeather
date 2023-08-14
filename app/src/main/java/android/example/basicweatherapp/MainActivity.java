@@ -18,12 +18,16 @@ import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.lang.Math;
+import java.net.URLConnection;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
@@ -44,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
     //Widgets
     EditText editTextEnterWeatherLocation;
     TextView textViewDisplayWeatherInfo;
-    Toast toastCityNotFound;
+    Toast toastLocationNotFound;
     Button buttonWeatherInfo;
 
     //Strings
@@ -74,8 +78,7 @@ public class MainActivity extends AppCompatActivity {
     String locationTimezone;
     String locationId;
     String locationName;
-
-    //API Strings
+    String downloadUrl;
     String API_Key = "f394e4fb836c1332f30df5d91d30d9ab";
     String API_URL_Weather = "https://api.openweathermap.org/data/2.5/weather?q=";
     String API_URL_Forecast = "https://api.openweathermap.org/data/2.5/forecast?q=";
@@ -94,18 +97,20 @@ public class MainActivity extends AppCompatActivity {
     //functions
     public void fetchWeatherData(View v)
     {
-        //variables
+        //get weather location from textbox
         weatherLocation = editTextEnterWeatherLocation.getText().toString(); //weather location from textbox
-        String downloadUrl = API_URL_Forecast + weatherLocation + "&appid=" + API_Key; //download url 1
-        //downloadUrl = API_URL_Weather + weatherLocation + "&appid=" + API_Key; //set download url 2
+
+        //set download url
+        downloadUrl = API_URL_Forecast + weatherLocation + "&appid=" + API_Key; //download url 1
 
         //start data download
-        DownloadTask downloadTask = new DownloadTask();
-        downloadTask.execute(downloadUrl);
+        new DownloadTask().execute(downloadUrl);
+        //DownloadTask downloadTask = new DownloadTask();
+        //downloadTask.execute(downloadUrl);
     }
 
 
-    /* public String getWeekdayName(Date value)
+    public String getWeekdayName(Date value)
     {
         Calendar c = Calendar.getInstance();
         c.setTime(value);
@@ -122,10 +127,11 @@ public class MainActivity extends AppCompatActivity {
         else if(weekday == 7) { dayOfWeek = "Sunday"; }
 
         return dayOfWeek;
-    } */
+    }
 
 
-    public String getTempFormatted(JSONObject obj, String type) throws JSONException {
+    public String getTempFormatted(JSONObject obj, String type) throws JSONException
+    {
         //variables
         String formattedString = "";
         double temperature = 0;
@@ -178,7 +184,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public String getSunDataFormatted(JSONObject obj, String type) throws JSONException {
+    public String getSunDataFormatted(JSONObject obj, String type) throws JSONException
+    {
         //variables
         String formattedString = "";
         long timestamp;
@@ -201,7 +208,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public String getHumidityFormatted(JSONObject obj, String type) throws JSONException {
+    public String getHumidityFormatted(JSONObject obj, String type) throws JSONException
+    {
         //variables
         String formattedString = "";
         JSONObject main = obj.getJSONObject("main");
@@ -216,7 +224,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public String getWeatherFormatted(JSONObject obj, String type) throws JSONException {
+    public String getWeatherFormatted(JSONObject obj, String type) throws JSONException
+    {
         //variables
         String formattedString = "";
         JSONArray weather1 = obj.getJSONArray("weather");
@@ -242,7 +251,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void setFormattedLocationEditText(JSONObject obj) throws JSONException {
+    public void setFormattedLocationEditText(JSONObject obj) throws JSONException
+    {
         //variables
         JSONObject city = obj.getJSONObject("city");
         String location = city.getString("name");
@@ -283,31 +293,282 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    public void handleDownloadData(String s)
+    {
+        //try parse data
+        try {
+            //set JSON variables
+            JSONObject jsonObject = new JSONObject(s); //data as JSON object
+            JSONArray list = jsonObject.getJSONArray("list"); //data as JSON array
+
+            //set Calendar
+            Calendar calendar = Calendar.getInstance(); //calendar
+
+            //today arrays
+            List<String> todaysTemperatureData = new ArrayList<>(); //today temp
+            List<String> todaysTminData = new ArrayList<>(); //today temp min
+            List<String> todaysTmaxData = new ArrayList<>(); //today temp max
+            List<String> todaysTfeelsData = new ArrayList<>(); //today temp feels like
+            List<String> todaysHumidityData = new ArrayList<>(); //today humidity
+            List<String> todaysWeatherData = new ArrayList<>(); //today weather description
+
+            //tomorrow arrays
+            List<String> tomorrowsTminData = new ArrayList<>(); //tomorrow temp min
+            List<String> tomorrowsTmaxData = new ArrayList<>(); //tomorrow temp max
+            List<String> tomorrowsWeatherData = new ArrayList<>(); //tomorrow weather description
+
+            //in 2 days arrays
+            List<String> in2DaysTminData = new ArrayList<>();
+            List<String> in2DaysTmaxData = new ArrayList<>();
+            List<String> in2DaysWeatherData = new ArrayList<>();
+
+            //in 3 days arrays
+            List<String> in3DaysTminData = new ArrayList<>();
+            List<String> in3DaysTmaxData = new ArrayList<>();
+            List<String> in3DaysWeatherData = new ArrayList<>();
+
+            //in 4 days arrays
+            List<String> in4DaysTminData = new ArrayList<>();
+            List<String> in4DaysTmaxData = new ArrayList<>();
+            List<String> in4DaysWeatherData = new ArrayList<>();
+
+            //in 5 days arrays
+            List<String> in5DaysTminData = new ArrayList<>();
+            List<String> in5DaysTmaxData = new ArrayList<>();
+            List<String> in5DaysWeatherData = new ArrayList<>();
+
+            //debugging
+            //Log.i("JSON Obj", jsonObject.toString());
+
+            //set dates
+            String todaysDate = setCalendarDate(calendar, "today");
+            String tomorrowsDate = setCalendarDate(calendar, "increment");
+            String dateIn2Days = setCalendarDate(calendar, "increment");
+            String dateIn3Days = setCalendarDate(calendar, "increment");
+            String dateIn4Days = setCalendarDate(calendar, "increment");
+            String dateIn5Days = setCalendarDate(calendar, "increment");
+
+            //set weekdays
+            //String weekdayToday = getWeekdayName(today);
+            //String weekdayTomorrow = getWeekdayName(tomorrow);
+            //String weekdayIn2Days = getWeekdayName(in2Days);
+            //String weekdayIn3Days = getWeekdayName(in3Days);
+            //String weekdayIn4Days = getWeekdayName(in4Days);
+            //String weekdayIn5Days = getWeekdayName(in5Days);
+
+            //sort JSON data
+            for (int i = 0; i < 40; i++) {
+                //variables
+                JSONObject itemObj = list.getJSONObject(i);
+                String itemDate = list.getJSONObject(i).getString("dt_txt").substring(0, 10);
+                String temperatureData = getTempFormatted(itemObj, "temp");
+                String tminData = getTempFormatted(itemObj, "tmin");
+                String tmaxData = getTempFormatted(itemObj, "tmax");
+                String tfeels_likeData = getTempFormatted(itemObj, "tfeels_like");
+                String humidityData = getHumidityFormatted(itemObj, "humidity");
+                String weatherData = getWeatherFormatted(itemObj, "weather");
+                //String count = String.valueOf(i);
+                //String weatherData = getWeatherDataFormatted(itemObj);
+
+                //debugging
+                //Log.i("JSON List Item " + count, itemObj);
+
+                //add todays values
+                if (Objects.equals(itemDate, todaysDate)) {
+                    todaysTemperatureData.add(temperatureData);
+                    todaysTminData.add(tminData);
+                    todaysTmaxData.add(tmaxData);
+                    todaysTfeelsData.add(tfeels_likeData);
+                    todaysHumidityData.add(humidityData);
+                    todaysWeatherData.add(weatherData);
+                }
+
+                //add tomorrows values
+                else if (Objects.equals(itemDate, tomorrowsDate)) //tomorrow
+                {
+                    tomorrowsTminData.add(tminData);
+                    tomorrowsTmaxData.add(tmaxData);
+                    tomorrowsWeatherData.add(weatherData);
+                }
+
+                //add in 2 days values
+                else if (Objects.equals(itemDate, dateIn2Days)) //in 2 days
+                {
+                    in2DaysTminData.add(tminData);
+                    in2DaysTmaxData.add(tmaxData);
+                    in2DaysWeatherData.add(weatherData);
+                }
+
+                //add in 3 days values
+                else if (Objects.equals(itemDate, dateIn3Days)) //in 3 days
+                {
+                    in3DaysTminData.add(tminData);
+                    in3DaysTmaxData.add(tmaxData);
+                    in3DaysWeatherData.add(weatherData);
+                }
+
+                //add in 4 days values
+                else if (Objects.equals(itemDate, dateIn4Days)) //in 4 days
+                {
+                    in4DaysTminData.add(tminData);
+                    in4DaysTmaxData.add(tmaxData);
+                    in4DaysWeatherData.add(weatherData);
+                }
+
+                //add in 5 days values
+                else if (Objects.equals(itemDate, dateIn5Days)) //in 5 days
+                {
+                    in5DaysTminData.add(tminData);
+                    in5DaysTmaxData.add(tmaxData);
+                    in5DaysWeatherData.add(weatherData);
+                }
+            }
+
+            //debugging
+            //Log.i("todaysTemperatureData", todaysTemperatureData.toString());
+            //Log.i("tomorrowsTminData", tomorrowsTminData.toString());
+            //Log.i("in2DaysTminData", in2DaysTminData.toString());
+            //Log.i("in3DaysTminData", in3DaysTminData.toString());
+            //Log.i("in4DaysTminData", in4DaysTminData.toString());
+            //Log.i("in5DaysTminData", in5DaysTminData.toString());
+            //Log.i("JSON List Item 1", list.getJSONObject(0).getString("dt_txt"));
+            //Log.i("JSON List Item 2", list.getJSONObject(1).getString("dt_txt"));
+            //Log.i("JSON List Item 3", list.getJSONObject(2).getString("dt_txt"));
+
+                /*
+                //set air feels like
+                if (humidityInt <= 20) { airFeels = "Dry"; }
+                else if (humidityInt >= 20 && humidityInt <= 60) { airFeels = "Normal"; }
+                else if (humidityInt >= 60 && humidityInt > 60) { airFeels =  "Wet"; }
+
+                //display weather info textview
+                textViewDisplayWeatherInfo.setVisibility(View.VISIBLE);
+                textViewDisplayWeatherInfo.setText(weatherInfoText);
+                */
+
+            //sort arrays (lowest to highest)
+            Collections.sort(todaysTminData);
+            Collections.sort(todaysTmaxData);
+            Collections.sort(tomorrowsTminData);
+            Collections.sort(tomorrowsTmaxData);
+            Collections.sort(in2DaysTminData);
+            Collections.sort(in2DaysTmaxData);
+            Collections.sort(in3DaysTminData);
+            Collections.sort(in3DaysTmaxData);
+            Collections.sort(in4DaysTminData);
+            Collections.sort(in4DaysTmaxData);
+            Collections.sort(in5DaysTminData);
+            Collections.sort(in5DaysTmaxData);
+
+            //set variables
+            dateIn2Days = getDateFormatted(dateIn2Days); //set formatted date string
+            dateIn3Days = getDateFormatted(dateIn3Days); //set formatted date string
+            dateIn4Days = getDateFormatted(dateIn4Days); //set formatted date string
+            dateIn5Days = getDateFormatted(dateIn5Days); //set formatted date string
+            sunrise = getSunDataFormatted(jsonObject, "sunrise"); //set sunrise
+            sunset = getSunDataFormatted(jsonObject, "sunset"); //set sunset
+            weatherInfoText = "Today" +
+                    "\n" + "· temp: " + todaysTemperatureData.get(0) +
+                    "\n" + "· feels like: " + todaysTfeelsData.get(0) +
+                    "\n" + "· range: " + todaysTminData.get(0) + " -  " + todaysTmaxData.get(todaysTmaxData.size() - 1) +
+                    //"\n" + "· humidity: " + todaysHumidityData.get(0) +
+                    "\n" + "· sun: " + sunrise + "  -  " + sunset +
+                    "\n" + "· weather: " + todaysWeatherData.get(0) +
+                    "\n\n" + "Tomorrow" + "\n" +
+                    "· temp: " + tomorrowsTminData.get(0) + " -  " + tomorrowsTmaxData.get(tomorrowsTmaxData.size() - 1) + "\n" +
+                    "· weather: " + tomorrowsWeatherData.get(0) +
+                    "\n\n" + dateIn2Days + "\n" +
+                    "· temp: " + in2DaysTminData.get(0) + " -  " + in2DaysTmaxData.get(in2DaysTmaxData.size() - 1) + "\n" +
+                    "· weather: " + in2DaysWeatherData.get(0) +
+                    "\n\n" + dateIn3Days + "\n" +
+                    "· temp: " + in3DaysTminData.get(0) + " -  " + in3DaysTmaxData.get(in3DaysTmaxData.size() - 1) + "\n" +
+                    "· weather: " + in3DaysWeatherData.get(0) +
+                    "\n\n" + dateIn4Days + "\n" +
+                    "· temp: " + in4DaysTminData.get(0) + " -  " + in4DaysTmaxData.get(in4DaysTmaxData.size() - 1) + "\n" +
+                    "· weather: " + in4DaysWeatherData.get(0) +
+                    "\n\n" + dateIn5Days + "\n" +
+                    "· temp: " + in5DaysTminData.get(0) + " -  " + in5DaysTmaxData.get(in5DaysTmaxData.size() - 1) + "\n" +
+                    "· weather: " + in5DaysWeatherData.get(0) +
+                    "\n\n\n\n";
+
+            //update UI
+            setFormattedLocationEditText(jsonObject);
+            setBackgroundImage(todaysTemperatureData.get(0));
+            textViewDisplayWeatherInfo.setText(weatherInfoText);
+        }
+        catch (Exception e)
+        {
+            //debugging
+            e.printStackTrace();
+            Log.i("Tag", "City not found");
+
+            //display error message as toast
+            toastLocationNotFound.show();
+
+            //reset weather info
+            textViewDisplayWeatherInfo.setText("");
+        }
+    }
+
+
+    @Override protected void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+
+        //load startup activity
+        setContentView(R.layout.activity_main);
+
+        //set widgets
+        editTextEnterWeatherLocation = findViewById(R.id.editTextEnterWeatherLocation);
+        textViewDisplayWeatherInfo = findViewById(R.id.textViewDisplayWeatherInfo);
+        //buttonWeatherInfo = findViewById(R.id.buttonWeatherInfo);
+
+        //set main background image
+        getWindow().setBackgroundDrawableResource(R.drawable.mainbackground);
+
+        //set error message location not found as toast
+        toastLocationNotFound = Toast.makeText(getApplicationContext(), "Location not found", Toast.LENGTH_SHORT);
+
+        //set listener for weather location on keyboard done
+        editTextEnterWeatherLocation.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) { fetchWeatherData(v); }
+                else { }
+                return false;
+            }
+        });
+
+        //set listener for weather location on click
+        editTextEnterWeatherLocation.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View v) {
+                //clear enter weather location text
+                editTextEnterWeatherLocation.getText().clear();
+                //editTextEnterWeatherLocation.setText("");
+            }
+        });
+    }
+
+
 
     //classes
     public class DownloadTask extends AsyncTask<String, Void, String>
     {
-        @Override
-        protected String doInBackground(String... urls)
+        //try download
+        @Override protected String doInBackground(String... urls)
         {
-            //variables
-            String result = "";
-            URL url;
-
-            //set http url connection
-            HttpURLConnection urlConnection = null;
-
-            //try download
             try
             {
+                //variables
+                String result = "";
+                URL url;
+                HttpURLConnection urlConnection = null;
                 url = new URL(urls[0]);
                 urlConnection = (HttpURLConnection) url.openConnection();
-
                 InputStream inputStream = urlConnection.getInputStream();
                 InputStreamReader inputReader = new InputStreamReader(inputStream);
-
                 int data = inputReader.read();
 
+                //process  data
                 while (data != -1)
                 {
                     char current = (char) data;
@@ -324,265 +585,11 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        @Override
-        protected void onPostExecute(String s) {
+        //post download execute
+        @Override protected void onPostExecute(String s)
+        {
             super.onPostExecute(s);
-
-            //try parse data
-            try
-            {
-                //set JSON variables
-                JSONObject jsonObject = new JSONObject(s); //data as JSON object
-                JSONArray list = jsonObject.getJSONArray("list"); //data as JSON array
-
-                //set Calendar
-                Calendar calendar = Calendar.getInstance(); //calendar
-
-                //today arrays
-                List<String> todaysTemperatureData = new ArrayList<>(); //today temp
-                List<String> todaysTminData = new ArrayList<>(); //today temp min
-                List<String> todaysTmaxData = new ArrayList<>(); //today temp max
-                List<String> todaysTfeelsData = new ArrayList<>(); //today temp feels like
-                List<String> todaysHumidityData = new ArrayList<>(); //today humidity
-                List<String> todaysWeatherData = new ArrayList<>(); //today weather description
-
-                //tomorrow arrays
-                List<String> tomorrowsTminData = new ArrayList<>(); //tomorrow temp min
-                List<String> tomorrowsTmaxData = new ArrayList<>(); //tomorrow temp max
-                List<String> tomorrowsWeatherData = new ArrayList<>(); //tomorrow weather description
-
-                //in 2 days arrays
-                List<String> in2DaysTminData = new ArrayList<>();
-                List<String> in2DaysTmaxData = new ArrayList<>();
-                List<String> in2DaysWeatherData = new ArrayList<>();
-
-                //in 3 days arrays
-                List<String> in3DaysTminData = new ArrayList<>();
-                List<String> in3DaysTmaxData = new ArrayList<>();
-                List<String> in3DaysWeatherData = new ArrayList<>();
-
-                //in 4 days arrays
-                List<String> in4DaysTminData = new ArrayList<>();
-                List<String> in4DaysTmaxData = new ArrayList<>();
-                List<String> in4DaysWeatherData = new ArrayList<>();
-
-                //in 5 days arrays
-                List<String> in5DaysTminData = new ArrayList<>();
-                List<String> in5DaysTmaxData = new ArrayList<>();
-                List<String> in5DaysWeatherData = new ArrayList<>();
-
-                //debugging
-                //Log.i("JSON Obj", jsonObject.toString());
-
-                //set dates
-                String todaysDate = setCalendarDate(calendar, "today");
-                String tomorrowsDate = setCalendarDate(calendar, "increment");
-                String dateIn2Days = setCalendarDate(calendar, "increment");
-                String dateIn3Days = setCalendarDate(calendar, "increment");
-                String dateIn4Days = setCalendarDate(calendar, "increment");
-                String dateIn5Days = setCalendarDate(calendar, "increment");
-
-                //set weekdays
-                //String weekdayToday = getWeekdayName(today);
-                //String weekdayTomorrow = getWeekdayName(tomorrow);
-                //String weekdayIn2Days = getWeekdayName(in2Days);
-                //String weekdayIn3Days = getWeekdayName(in3Days);
-                //String weekdayIn4Days = getWeekdayName(in4Days);
-                //String weekdayIn5Days = getWeekdayName(in5Days);
-
-                //sort JSON data
-                for(int i = 0; i < 40; i++)
-                {
-                    //variables
-                    JSONObject itemObj = list.getJSONObject(i);
-                    String itemDate = list.getJSONObject(i).getString("dt_txt").substring(0, 10);
-                    String temperatureData = getTempFormatted(itemObj, "temp");
-                    String tminData = getTempFormatted(itemObj, "tmin");
-                    String tmaxData = getTempFormatted(itemObj, "tmax");
-                    String tfeels_likeData = getTempFormatted(itemObj, "tfeels_like");
-                    String humidityData = getHumidityFormatted(itemObj, "humidity");
-                    String weatherData = getWeatherFormatted(itemObj, "weather");
-                    //String count = String.valueOf(i);
-                    //String weatherData = getWeatherDataFormatted(itemObj);
-
-                    //debugging
-                    //Log.i("JSON List Item " + count, itemObj);
-
-                    //add todays values
-                    if(Objects.equals(itemDate, todaysDate))
-                    {
-                        todaysTemperatureData.add(temperatureData);
-                        todaysTminData.add(tminData);
-                        todaysTmaxData.add(tmaxData);
-                        todaysTfeelsData.add(tfeels_likeData);
-                        todaysHumidityData.add(humidityData);
-                        todaysWeatherData.add(weatherData);
-                    }
-
-                    //add tomorrows values
-                    else if(Objects.equals(itemDate, tomorrowsDate)) //tomorrow
-                    {
-                        tomorrowsTminData.add(tminData);
-                        tomorrowsTmaxData.add(tmaxData);
-                        tomorrowsWeatherData.add(weatherData);
-                    }
-
-                    //add in 2 days values
-                    else if(Objects.equals(itemDate, dateIn2Days)) //in 2 days
-                    {
-                        in2DaysTminData.add(tminData);
-                        in2DaysTmaxData.add(tmaxData);
-                        in2DaysWeatherData.add(weatherData);
-                    }
-
-                    //add in 3 days values
-                    else if(Objects.equals(itemDate, dateIn3Days)) //in 3 days
-                    {
-                        in3DaysTminData.add(tminData);
-                        in3DaysTmaxData.add(tmaxData);
-                        in3DaysWeatherData.add(weatherData);
-                    }
-
-                    //add in 4 days values
-                    else if(Objects.equals(itemDate, dateIn4Days)) //in 4 days
-                    {
-                        in4DaysTminData.add(tminData);
-                        in4DaysTmaxData.add(tmaxData);
-                        in4DaysWeatherData.add(weatherData);
-                    }
-
-                    //add in 5 days values
-                    else if(Objects.equals(itemDate, dateIn5Days)) //in 5 days
-                    {
-                        in5DaysTminData.add(tminData);
-                        in5DaysTmaxData.add(tmaxData);
-                        in5DaysWeatherData.add(weatherData);
-                    }
-                }
-
-                //debugging
-                //Log.i("todaysTemperatureData", todaysTemperatureData.toString());
-                //Log.i("tomorrowsTminData", tomorrowsTminData.toString());
-                //Log.i("in2DaysTminData", in2DaysTminData.toString());
-                //Log.i("in3DaysTminData", in3DaysTminData.toString());
-                //Log.i("in4DaysTminData", in4DaysTminData.toString());
-                //Log.i("in5DaysTminData", in5DaysTminData.toString());
-                //Log.i("JSON List Item 1", list.getJSONObject(0).getString("dt_txt"));
-                //Log.i("JSON List Item 2", list.getJSONObject(1).getString("dt_txt"));
-                //Log.i("JSON List Item 3", list.getJSONObject(2).getString("dt_txt"));
-
-                /*
-                //set air feels like
-                if (humidityInt <= 20) { airFeels = "Dry"; }
-                else if (humidityInt >= 20 && humidityInt <= 60) { airFeels = "Normal"; }
-                else if (humidityInt >= 60 && humidityInt > 60) { airFeels =  "Wet"; }
-
-                //display weather info textview
-                textViewDisplayWeatherInfo.setVisibility(View.VISIBLE);
-                textViewDisplayWeatherInfo.setText(weatherInfoText);
-                */
-
-                //sort arrays (lowest to highest)
-                Collections.sort(todaysTminData);
-                Collections.sort(todaysTmaxData);
-                Collections.sort(tomorrowsTminData);
-                Collections.sort(tomorrowsTmaxData);
-                Collections.sort(in2DaysTminData);
-                Collections.sort(in2DaysTmaxData);
-                Collections.sort(in3DaysTminData);
-                Collections.sort(in3DaysTmaxData);
-                Collections.sort(in4DaysTminData);
-                Collections.sort(in4DaysTmaxData);
-                Collections.sort(in5DaysTminData);
-                Collections.sort(in5DaysTmaxData);
-
-                //set variables
-                dateIn2Days = getDateFormatted(dateIn2Days); //set formatted date string
-                dateIn3Days = getDateFormatted(dateIn3Days); //set formatted date string
-                dateIn4Days = getDateFormatted(dateIn4Days); //set formatted date string
-                dateIn5Days = getDateFormatted(dateIn5Days); //set formatted date string
-                sunrise = getSunDataFormatted(jsonObject, "sunrise"); //set sunrise
-                sunset = getSunDataFormatted(jsonObject, "sunset"); //set sunset
-                weatherInfoText = "Today" +
-                                  "\n" + "· temp: " + todaysTemperatureData.get(0) +
-                                  "\n" + "· feels like: " + todaysTfeelsData.get(0) +
-                                  "\n" + "· range: " + todaysTminData.get(0) + " -  " + todaysTmaxData.get(todaysTmaxData.size() - 1) +
-                                  //"\n" + "· humidity: " + todaysHumidityData.get(0) +
-                                  "\n" + "· sun: " + sunrise + "  -  " + sunset +
-                                  "\n" + "· weather: " + todaysWeatherData.get(0) +
-                                  "\n\n" + "Tomorrow" + "\n" +
-                                  "· temp: " + tomorrowsTminData.get(0) + " -  " + tomorrowsTmaxData.get(tomorrowsTmaxData.size() - 1) + "\n" +
-                                  "· weather: " + tomorrowsWeatherData.get(0) +
-                                  "\n\n" + dateIn2Days + "\n" +
-                                  "· temp: " + in2DaysTminData.get(0) + " -  " + in2DaysTmaxData.get(in2DaysTmaxData.size() - 1) + "\n" +
-                                  "· weather: " + in2DaysWeatherData.get(0) +
-                                  "\n\n" + dateIn3Days + "\n" +
-                                  "· temp: " + in3DaysTminData.get(0) + " -  " + in3DaysTmaxData.get(in3DaysTmaxData.size() - 1) + "\n" +
-                                  "· weather: " + in3DaysWeatherData.get(0) +
-                                  "\n\n" + dateIn4Days + "\n" +
-                                  "· temp: " + in4DaysTminData.get(0) + " -  " + in4DaysTmaxData.get(in4DaysTmaxData.size() - 1) + "\n" +
-                                  "· weather: " + in4DaysWeatherData.get(0) +
-                                  "\n\n" + dateIn5Days + "\n" +
-                                  "· temp: " + in5DaysTminData.get(0) + " -  " + in5DaysTmaxData.get(in5DaysTmaxData.size() - 1) + "\n" +
-                                  "· weather: " + in5DaysWeatherData.get(0) +
-                                  "\n\n\n\n";
-
-                //update UI
-                setFormattedLocationEditText(jsonObject);
-                setBackgroundImage(todaysTemperatureData.get(0));
-                textViewDisplayWeatherInfo.setText(weatherInfoText);
-            }
-            catch (Exception e)
-            {
-                //debugging
-                e.printStackTrace();
-                Log.i("Tag", "City not found");
-
-                //display error message as toast
-                toastCityNotFound.show();
-
-                //reset weather info
-                textViewDisplayWeatherInfo.setText("");
-            }
+            handleDownloadData(s);
         }
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        //load startup activity
-        setContentView(R.layout.activity_main);
-
-        //set widgets
-        editTextEnterWeatherLocation = findViewById(R.id.editTextEnterWeatherLocation);
-        textViewDisplayWeatherInfo = findViewById(R.id.textViewDisplayWeatherInfo);
-        //buttonWeatherInfo = findViewById(R.id.buttonWeatherInfo);
-
-        //set main background image
-        getWindow().setBackgroundDrawableResource(R.drawable.mainbackground);
-
-        //set error message location not found as toast
-        toastCityNotFound = Toast.makeText(getApplicationContext(), "Location not found", Toast.LENGTH_SHORT);
-
-        //set listener for weather location on keyboard done
-        editTextEnterWeatherLocation.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE) { fetchWeatherData(v); }
-                else { }
-                return false;
-            }
-        });
-
-        //set listener for weather location on click
-        editTextEnterWeatherLocation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //clear enter weather location text
-                editTextEnterWeatherLocation.getText().clear();
-                //editTextEnterWeatherLocation.setText("");
-            }
-        });
     }
 }
