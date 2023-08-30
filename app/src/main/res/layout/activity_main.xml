@@ -1,42 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!-- MainActivity -->
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
-                                                   xmlns:tools="http://schemas.android.com/tools"
-                                                   android:layout_width="match_parent"
-                                                   android:layout_height="match_parent"
-                                                   android:fadingEdge="vertical"
-                                                   tools:context=".MainActivity">
-                                                   <!-- android:background="#FFFFFF" -->
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fadingEdge="vertical"
+    android:visibility="visible"
+    tools:context=".MainActivity">
+    <!-- android:background="#FFFFFF" -->
 
-    <LinearLayout android:layout_width="0dp"
-                  android:layout_height="0dp"
-                  android:background="@android:color/transparent"
-                  android:gravity="center"
-                  android:orientation="vertical"
-                  android:padding="20dp"
-                  app:layout_constraintBottom_toBottomOf="parent"
-                  app:layout_constraintEnd_toEndOf="parent"
-                  app:layout_constraintStart_toStartOf="parent"
-                  app:layout_constraintTop_toTopOf="parent"
-                  app:layout_constraintVertical_bias="0.029">
+    <!-- Tab 1 -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/mainbackground"
+        android:fadingEdge="vertical"
+        android:visibility="visible"
+        tools:context=".MainActivity">
+        <!-- android:background="#FFFFFF" -->
 
-        <EditText
-            android:id="@+id/editTextEnterWeatherLocation"
-            android:layout_width="400dp"
-            android:layout_height="49dp"
-            android:background="@android:color/black"
-            android:gravity="center"
-            android:hint="Location..."
-            android:imeOptions="actionDone"
-            android:inputType="textPersonName"
-            android:singleLine="true"
-            android:textColor="@android:color/white"
-            android:textColorHighlight="@android:color/white"
-            android:textColorHint="@android:color/white"
-            android:textColorLink="@android:color/white"
-            android:textSize="26sp" />
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="0dp"
+            android:layout_height="590dp"
+            android:background="@android:color/transparent"
+            android:gravity="left"
+            android:orientation="vertical"
+            android:padding="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0">
 
-        <!-- <Button android:id="@+id/buttonWeatherInfo"
+            <!-- <Button android:id="@+id/buttonWeatherInfo"
                 android:layout_width="400dp"
                 android:layout_height="wrap_content"
                 android:background="@android:color/black"
@@ -48,24 +50,200 @@
                 android:textStyle="bold"
                 android:visibility="gone" /> -->
 
-        <ScrollView android:layout_width="wrap_content"
+            <EditText
+                android:id="@+id/editTextEnterWeatherLocation"
+                android:layout_width="370dp"
+                android:layout_height="49dp"
+                android:background="@android:color/black"
+                android:gravity="center|left"
+                android:hint="Location..."
+                android:imeOptions="actionDone"
+                android:inputType="textPersonName"
+                android:paddingLeft="20dp"
+                android:singleLine="true"
+                android:textColor="@android:color/white"
+                android:textColorHighlight="@android:color/white"
+                android:textColorHint="@android:color/white"
+                android:textColorLink="@android:color/white"
+                android:textSize="22sp" />
+
+            <ScrollView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scrollbars="none">
+
+                <TextView
+                    android:id="@+id/textViewDisplayWeatherInfo"
+                    android:layout_width="400dp"
                     android:layout_height="wrap_content"
-                    android:scrollbars="none">
+                    android:layout_marginTop="20dp"
+                    android:shadowColor="@color/text_shadow"
+                    android:shadowDx="1"
+                    android:shadowDy="1"
+                    android:shadowRadius="2"
+                    android:text=""
+                    android:textColor="@android:color/white"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:visibility="visible" />
+            </ScrollView>
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- Tab 2 -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#2F2F2F"
+        android:fadingEdge="vertical"
+        android:visibility="gone"
+        tools:context=".MainActivity">
+        <!-- android:background="#FFFFFF" -->
+
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="0dp"
+            android:layout_height="130dp"
+            android:background="@android:color/transparent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="20dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0">
 
             <TextView
-                android:id="@+id/textViewDisplayWeatherInfo"
-                android:layout_width="400dp"
+                android:id="@+id/textView"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginBottom="6dp"
+                android:gravity="center"
                 android:shadowColor="@color/text_shadow"
                 android:shadowDx="1"
                 android:shadowDy="1"
                 android:shadowRadius="2"
-                android:text=""
+                android:text="Settings"
                 android:textColor="@android:color/white"
-                android:textSize="26sp"
-                android:textStyle="bold"
-                android:visibility="visible" />
-        </ScrollView>
+                android:textSize="22sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/editTextTab2"
+                android:layout_width="370dp"
+                android:layout_height="49dp"
+                android:background="@android:color/white"
+                android:gravity="center|left"
+                android:hint="Default Location..."
+                android:imeOptions="actionDone"
+                android:inputType="textPersonName"
+                android:paddingLeft="40dp"
+                android:singleLine="true"
+                android:textColor="@android:color/black"
+                android:textColorHighlight="@android:color/black"
+                android:textColorHint="@android:color/black"
+                android:textColorLink="@android:color/black"
+                android:textSize="20sp" />
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- Tab 3 -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout3"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#2F2F2F"
+        android:fadingEdge="vertical"
+        android:visibility="gone"
+        tools:context=".MainActivity">
+        <!-- android:background="#FFFFFF" -->
+
+        <LinearLayout
+            android:id="@+id/linearLayout3"
+            android:layout_width="0dp"
+            android:layout_height="90dp"
+            android:background="@android:color/transparent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="20dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0">
+
+            <TextView
+                android:id="@+id/textViewTab3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:shadowColor="@color/text_shadow"
+                android:shadowDx="1"
+                android:shadowDy="1"
+                android:shadowRadius="2"
+                android:text="About"
+                android:textColor="@android:color/white"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- Bottom Button Menu -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@android:color/transparent"
+        android:gravity="center"
+        android:paddingBottom="2dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <Button
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            android:onClick="changeToTab1"
+            android:shadowColor="@color/text_shadow"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="2"
+            android:text="1"
+            android:textColor="@android:color/white"
+            android:textSize="26sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            android:onClick="changeToTab2"
+            android:shadowColor="@color/text_shadow"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="2"
+            android:text="2"
+            android:textColor="@android:color/white"
+            android:textSize="26sp" />
+
+        <Button
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            android:onClick="changeToTab3"
+            android:shadowColor="@color/text_shadow"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="2"
+            android:text="3"
+            android:textColor="@android:color/white"
+            android:textSize="26sp"
+            android:textStyle="bold" />
+
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

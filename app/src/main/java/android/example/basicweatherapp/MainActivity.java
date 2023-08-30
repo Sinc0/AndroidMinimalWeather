@@ -5,6 +5,8 @@ package android.example.basicweatherapp;
 
 //includes
 import androidx.appcompat.app.AppCompatActivity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -47,18 +49,18 @@ import java.util.concurrent.TimeUnit;
 public class MainActivity extends AppCompatActivity {
     //Widgets
     EditText editTextEnterWeatherLocation;
+    EditText editTextTab2;
     TextView textViewDisplayWeatherInfo;
     Toast toastLocationNotFound;
-    Button buttonWeatherInfo;
+    //Button buttonWeatherInfo;
 
     //Strings
-    String editTextString;
+    //String editTextString;
     String sunrise;
     String sunset;
     String weatherInfoText;
     String formattedWeatherLocation;
     String weatherLocation;
-    //String downloadUrl;
     String humidity;
     String temperature;
     String feelsLike;
@@ -109,6 +111,19 @@ public class MainActivity extends AppCompatActivity {
         //downloadTask.execute(downloadUrl);
     }
 
+    public void fetchDefaultLocationData(String defaultLocation)
+    {
+        //get weather location from textbox
+        weatherLocation = defaultLocation;
+
+        //set download url
+        downloadUrl = API_URL_Forecast + weatherLocation + "&appid=" + API_Key; //download url 1
+
+        //start data download
+        new DownloadTask().execute(downloadUrl);
+        //DownloadTask downloadTask = new DownloadTask();
+        //downloadTask.execute(downloadUrl);
+    }
 
     public String getWeekdayName(Date value)
     {
@@ -163,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
         String part1 = split[0];
         String part2 = split[1];
 
-        //check date
+        //format month
         if(Objects.equals(part1, "1")) { part1 = "Jan"; }
         else if(Objects.equals(part1, "2")) { part1 = "Feb"; }
         else if(Objects.equals(part1, "3")) { part1 = "Mar"; }
@@ -176,6 +191,17 @@ public class MainActivity extends AppCompatActivity {
         else if(Objects.equals(part1, "10")) { part1 = "Oct"; }
         else if(Objects.equals(part1, "11")) { part1 = "Nov"; }
         else if(Objects.equals(part1, "12")) { part1 = "Dec"; }
+
+        //format date
+        if(Objects.equals(part2, "01")) { part2 = "1"; }
+        else if(Objects.equals(part2, "02")) { part2 = "2"; }
+        else if(Objects.equals(part2, "03")) { part2 = "3"; }
+        else if(Objects.equals(part2, "04")) { part2 = "4"; }
+        else if(Objects.equals(part2, "05")) { part2 = "5"; }
+        else if(Objects.equals(part2, "06")) { part2 = "6"; }
+        else if(Objects.equals(part2, "07")) { part2 = "7"; }
+        else if(Objects.equals(part2, "08")) { part2 = "8"; }
+        else if(Objects.equals(part2, "09")) { part2 = "9"; }
 
         //set formatted string
         formattedString =  part1 + " " + part2;
@@ -242,12 +268,20 @@ public class MainActivity extends AppCompatActivity {
     public void setBackgroundImage(String temperature)
     {
         //variables
-        int currentTemp = Integer.parseInt(temperature.substring(0, 2));
+        int currentTemp;
+        View constraintLayout1 = findViewById(R.id.constraintLayout1);
+
+        //null check
+        if(temperature == null) { constraintLayout1.setBackgroundResource(R.drawable.mainbackground); return; }
+
+        //set current temp
+        currentTemp = Integer.parseInt(temperature.substring(0, 2));
 
         //set background based on temperature
-        if (currentTemp < 10) { getWindow().setBackgroundDrawableResource(R.drawable.cold); }
-        else if (currentTemp > 10 && currentTemp <= 20) { getWindow().setBackgroundDrawableResource(R.drawable.normal); }
-        else if (currentTemp > 20) { getWindow().setBackgroundDrawableResource(R.drawable.sun); }
+        if (currentTemp < 10) { constraintLayout1.setBackgroundResource(R.drawable.cold); }
+        //else if (currentTemp > 10 && currentTemp <= 30) { getWindow().setBackgroundDrawableResource(R.drawable.normal); }
+        else if (currentTemp > 10 && currentTemp <= 30) { constraintLayout1.setBackgroundResource(R.drawable.mainbackground); }
+        else if (currentTemp > 30) { constraintLayout1.setBackgroundResource(R.drawable.sun); }
     }
 
 
@@ -467,6 +501,7 @@ public class MainActivity extends AppCompatActivity {
             dateIn5Days = getDateFormatted(dateIn5Days); //set formatted date string
             sunrise = getSunDataFormatted(jsonObject, "sunrise"); //set sunrise
             sunset = getSunDataFormatted(jsonObject, "sunset"); //set sunset
+            temperature = todaysTemperatureData.get(0);
             weatherInfoText = "Today" +
                     "\n" + "· temp: " + todaysTemperatureData.get(0) +
                     "\n" + "· feels like: " + todaysTfeelsData.get(0) +
@@ -511,6 +546,121 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    public void changeToTab1(View v)
+    {
+        //debug
+        System.out.println("changed to tab 1");
+
+        //variables
+        View linearLayout1 = findViewById(R.id.linearLayout);
+        View linearLayout2 = findViewById(R.id.linearLayout2);
+        View linearLayout3 = findViewById(R.id.linearLayout3);
+        View constraintLayout1 = findViewById(R.id.constraintLayout1);
+        View constraintLayout2 = findViewById(R.id.constraintLayout2);
+        View constraintLayout3 = findViewById(R.id.constraintLayout3);
+
+        //reset visibility
+        linearLayout1.setVisibility(View.GONE);
+        linearLayout2.setVisibility(View.GONE);
+        linearLayout3.setVisibility(View.GONE);
+        constraintLayout1.setVisibility(View.GONE);
+        constraintLayout2.setVisibility(View.GONE);
+        constraintLayout3.setVisibility(View.GONE);
+
+        //display tab 1
+        linearLayout1.setVisibility(View.VISIBLE);
+        constraintLayout1.setVisibility(View.VISIBLE);
+    }
+
+
+    public void changeToTab2(View v)
+    {
+        //debug
+        System.out.println("changed to tab 2");
+
+        //variables
+        View linearLayout1 = findViewById(R.id.linearLayout);
+        View linearLayout2 = findViewById(R.id.linearLayout2);
+        View linearLayout3 = findViewById(R.id.linearLayout3);
+        View constraintLayout1 = findViewById(R.id.constraintLayout1);
+        View constraintLayout2 = findViewById(R.id.constraintLayout2);
+        View constraintLayout3 = findViewById(R.id.constraintLayout3);
+
+        //reset visibility
+        linearLayout1.setVisibility(View.GONE);
+        linearLayout2.setVisibility(View.GONE);
+        linearLayout3.setVisibility(View.GONE);
+        constraintLayout1.setVisibility(View.GONE);
+        constraintLayout2.setVisibility(View.GONE);
+        constraintLayout3.setVisibility(View.GONE);
+
+        //display tab 2
+        linearLayout2.setVisibility(View.VISIBLE);
+        constraintLayout2.setVisibility(View.VISIBLE);
+    }
+
+    public void changeToTab3(View v)
+    {
+        //debug
+        System.out.println("changed to tab 3");
+
+        //variables
+        View linearLayout1 = findViewById(R.id.linearLayout);
+        View linearLayout2 = findViewById(R.id.linearLayout2);
+        View linearLayout3 = findViewById(R.id.linearLayout3);
+        View constraintLayout1 = findViewById(R.id.constraintLayout1);
+        View constraintLayout2 = findViewById(R.id.constraintLayout2);
+        View constraintLayout3 = findViewById(R.id.constraintLayout3);
+
+        //reset visibility
+        linearLayout1.setVisibility(View.GONE);
+        linearLayout2.setVisibility(View.GONE);
+        linearLayout3.setVisibility(View.GONE);
+        constraintLayout1.setVisibility(View.GONE);
+        constraintLayout2.setVisibility(View.GONE);
+        constraintLayout3.setVisibility(View.GONE);
+
+        //display tab 3
+        linearLayout3.setVisibility(View.VISIBLE);
+        constraintLayout3.setVisibility(View.VISIBLE);
+    }
+
+    public void saveDefaultLocation()
+    {
+        String defaultLocation;
+        SharedPreferences sharedPref = MainActivity.this.getPreferences(Context.MODE_PRIVATE); //getActivity().getPreferences(Context.MODE_PRIVATE);
+        defaultLocation = editTextTab2.getText().toString();
+
+        defaultLocation = defaultLocation.substring(0, 1).toUpperCase() + defaultLocation.substring(1);
+
+        if(defaultLocation.equals("Null")) { editTextTab2.getText().clear(); }
+        else if(!defaultLocation.equals("Null"))
+        {
+            sharedPref.edit().putString("defaultLocation", defaultLocation).apply();
+            String dl = sharedPref.getString("defaultLocation", "");
+            editTextTab2.setText(dl);
+            //fetchDefaultLocationData(defaultLocation);
+        }
+    }
+
+    public String getDefaultLocation()
+    {
+        SharedPreferences sharedPref = MainActivity.this.getPreferences(Context.MODE_PRIVATE);
+        String dl = sharedPref.getString("defaultLocation", "");
+
+        Log.i("Default Location", dl);
+
+        return dl;
+    }
+
+    public void clearSharedPreferences()
+    {
+        SharedPreferences sharedPref = MainActivity.this.getPreferences(Context.MODE_PRIVATE);
+
+        sharedPref.edit().clear();
+    }
+
+
     @Override protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
@@ -518,22 +668,37 @@ public class MainActivity extends AppCompatActivity {
         //load startup activity
         setContentView(R.layout.activity_main);
 
-        //set widgets
+        //variables
         editTextEnterWeatherLocation = findViewById(R.id.editTextEnterWeatherLocation);
         textViewDisplayWeatherInfo = findViewById(R.id.textViewDisplayWeatherInfo);
+        editTextTab2 = findViewById(R.id.editTextTab2);
         //buttonWeatherInfo = findViewById(R.id.buttonWeatherInfo);
 
         //set main background image
-        getWindow().setBackgroundDrawableResource(R.drawable.mainbackground);
+        //getWindow().setBackgroundDrawableResource(R.drawable.mainbackground);
 
         //set error message location not found as toast
         toastLocationNotFound = Toast.makeText(getApplicationContext(), "Location not found", Toast.LENGTH_SHORT);
+
+        //set tab2 default location
+        //clearSharedPreferences();
+        String defaultLocation = getDefaultLocation();
+
+        if(defaultLocation.equals("") || defaultLocation.equals("Null")) { }
+        else
+        {
+            editTextTab2.setText(defaultLocation);
+
+            //load default location weather data
+            fetchDefaultLocationData(defaultLocation);
+        }
+
 
         //set listener for weather location on keyboard done
         editTextEnterWeatherLocation.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) { fetchWeatherData(v); }
-                else { }
+                else { return false; }
                 return false;
             }
         });
@@ -544,6 +709,14 @@ public class MainActivity extends AppCompatActivity {
                 //clear enter weather location text
                 editTextEnterWeatherLocation.getText().clear();
                 //editTextEnterWeatherLocation.setText("");
+            }
+        });
+
+        editTextTab2.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) { System.out.println("Tab 2 Edit Text Test"); saveDefaultLocation(); }
+                else { return false; }
+                return false;
             }
         });
     }
