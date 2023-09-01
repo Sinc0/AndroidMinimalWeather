@@ -1,7 +1,5 @@
-//name
+//namespace
 package android.example.basicweatherapp;
-
-
 
 //includes
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,87 +11,44 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.lang.Math;
-import java.net.URLConnection;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.DayOfWeek;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
-import java.util.TimeZone;
-import java.util.concurrent.TimeUnit;
 
 
-
-//main
+//main class
 public class MainActivity extends AppCompatActivity {
-    //Widgets
+    //variables
     EditText editTextEnterWeatherLocation;
     EditText editTextTab2;
     TextView textViewDisplayWeatherInfo;
     Toast toastLocationNotFound;
-    //Button buttonWeatherInfo;
-
-    //Strings
-    //String editTextString;
     String sunrise;
     String sunset;
     String weatherInfoText;
     String formattedWeatherLocation;
     String weatherLocation;
-    String humidity;
     String temperature;
-    String feelsLike;
-    String airFeels;
-    String description;
-    String celsius;
-    String country;
-    String tempMax;
-    String tempMin;
-    String pressure;
-    String clouds;
-    String coords;
-    String weather;
-    String wind;
-    String visibility;
-    String dt;
-    String locationTimezone;
-    String locationId;
-    String locationName;
     String downloadUrl;
     String API_Key = "f394e4fb836c1332f30df5d91d30d9ab";
-    String API_URL_Weather = "https://api.openweathermap.org/data/2.5/weather?q=";
     String API_URL_Forecast = "https://api.openweathermap.org/data/2.5/forecast?q=";
-
-    //ints
-    int humidityInt = 0;
-    int celsiusInt = 0;
-    int feelsLikeInt = 0;
-
-    //doubles
-    double temperatureDouble = 0;
-    double feelsLikeDouble = 0;
-
+    String API_URL_Weather = "https://api.openweathermap.org/data/2.5/weather?q=";
 
 
     //functions
@@ -105,11 +60,10 @@ public class MainActivity extends AppCompatActivity {
         //set download url
         downloadUrl = API_URL_Forecast + weatherLocation + "&appid=" + API_Key; //download url 1
 
-        //start data download
+        //start async data download
         new DownloadTask().execute(downloadUrl);
-        //DownloadTask downloadTask = new DownloadTask();
-        //downloadTask.execute(downloadUrl);
     }
+
 
     public void fetchDefaultLocationData(String defaultLocation)
     {
@@ -119,11 +73,10 @@ public class MainActivity extends AppCompatActivity {
         //set download url
         downloadUrl = API_URL_Forecast + weatherLocation + "&appid=" + API_Key; //download url 1
 
-        //start data download
+        //start async data download
         new DownloadTask().execute(downloadUrl);
-        //DownloadTask downloadTask = new DownloadTask();
-        //downloadTask.execute(downloadUrl);
     }
+
 
     public String getWeekdayName(Date value)
     {
@@ -169,7 +122,6 @@ public class MainActivity extends AppCompatActivity {
         formattedString = String.valueOf(temperature);
         if(formattedString.length() == 4) { formattedString = String.valueOf(temperature).substring(0, 2) + "°"; }
         else if(formattedString.length() == 3) { formattedString = String.valueOf(temperature).substring(0, 1) + "°"; }
-
 
         //return value
         return formattedString;
@@ -289,11 +241,11 @@ public class MainActivity extends AppCompatActivity {
 
         //set background based on temperature
         if (currentTemp < 10)
-        { constraintLayout1.setBackgroundResource(R.drawable.cold); } //temp below 10 = cold
+            { constraintLayout1.setBackgroundResource(R.drawable.cold); } //temp below 10 = cold
         else if (currentTemp >= 10 && currentTemp <= 26)
-        { constraintLayout1.setBackgroundResource(R.drawable.mainbackground); } //temp between 10 and 26 = normal
+            { constraintLayout1.setBackgroundResource(R.drawable.mainbackground); } //temp between 10 and 26 = normal
         else if (currentTemp > 26)
-        { constraintLayout1.setBackgroundResource(R.drawable.sun); } //temp above 26 = hot
+            { constraintLayout1.setBackgroundResource(R.drawable.sun); } //temp above 26 = hot
     }
 
 
@@ -323,14 +275,9 @@ public class MainActivity extends AppCompatActivity {
 
         //check type
         if(type == "today")
-        {
-            date = value.getTime();
-        }
+            { date = value.getTime(); }
         else if(type == "increment")
-        {
-            value.add(Calendar.DAY_OF_YEAR, 1);
-            date = value.getTime();
-        }
+            { value.add(Calendar.DAY_OF_YEAR, 1); date = value.getTime(); }
 
         //set formatted string
         shortDateString = dateFormat.format(date).substring(0, 10).replace("/", "-");
@@ -405,8 +352,6 @@ public class MainActivity extends AppCompatActivity {
                 String tfeels_likeData = getTempFormatted(itemObj, "tfeels_like");
                 String humidityData = getHumidityFormatted(itemObj, "humidity");
                 String weatherData = getWeatherFormatted(itemObj, "weather");
-                //String count = String.valueOf(i);
-                //String weatherData = getWeatherDataFormatted(itemObj);
 
                 if(Objects.equals(weatherData, "rain")) { weatherData = "Rainy"; }
                 else if(Objects.equals(weatherData, "clouds")) { weatherData = "Cloudy"; }
@@ -425,40 +370,17 @@ public class MainActivity extends AppCompatActivity {
                     todaysWeatherData.add(weatherData);
                 }
 
-                //add tomorrows values
-                else if (Objects.equals(itemDate, tomorrowsDate)) {
-                    tomorrowsTminData.add(tminData);
-                    tomorrowsTmaxData.add(tmaxData);
-                    tomorrowsWeatherData.add(weatherData);
-                }
-
-                //add in 2 days values
-                else if (Objects.equals(itemDate, dateIn2Days)) {
-                    in2DaysTminData.add(tminData);
-                    in2DaysTmaxData.add(tmaxData);
-                    in2DaysWeatherData.add(weatherData);
-                }
-
-                //add in 3 days values
-                else if (Objects.equals(itemDate, dateIn3Days)) {
-                    in3DaysTminData.add(tminData);
-                    in3DaysTmaxData.add(tmaxData);
-                    in3DaysWeatherData.add(weatherData);
-                }
-
-                //add in 4 days values
-                else if (Objects.equals(itemDate, dateIn4Days)) {
-                    in4DaysTminData.add(tminData);
-                    in4DaysTmaxData.add(tmaxData);
-                    in4DaysWeatherData.add(weatherData);
-                }
-
-                //add in 5 days values
-                else if (Objects.equals(itemDate, dateIn5Days)) {
-                    in5DaysTminData.add(tminData);
-                    in5DaysTmaxData.add(tmaxData);
-                    in5DaysWeatherData.add(weatherData);
-                }
+                //add other days values
+                else if (Objects.equals(itemDate, tomorrowsDate))
+                    { tomorrowsTminData.add(tminData); tomorrowsTmaxData.add(tmaxData); tomorrowsWeatherData.add(weatherData); }
+                else if (Objects.equals(itemDate, dateIn2Days))
+                    { in2DaysTminData.add(tminData); in2DaysTmaxData.add(tmaxData); in2DaysWeatherData.add(weatherData); }
+                else if (Objects.equals(itemDate, dateIn3Days))
+                    { in3DaysTminData.add(tminData); in3DaysTmaxData.add(tmaxData); in3DaysWeatherData.add(weatherData); }
+                else if (Objects.equals(itemDate, dateIn4Days))
+                    { in4DaysTminData.add(tminData); in4DaysTmaxData.add(tmaxData); in4DaysWeatherData.add(weatherData); }
+                else if (Objects.equals(itemDate, dateIn5Days))
+                    { in5DaysTminData.add(tminData); in5DaysTmaxData.add(tmaxData); in5DaysWeatherData.add(weatherData); }
             }
 
             //sort arrays (lowest to highest)
@@ -587,6 +509,7 @@ public class MainActivity extends AppCompatActivity {
         constraintLayout2.setVisibility(View.VISIBLE);
     }
 
+
     public void changeToTab3(View v)
     {
         //debugging
@@ -613,6 +536,7 @@ public class MainActivity extends AppCompatActivity {
         constraintLayout3.setVisibility(View.VISIBLE);
     }
 
+
     public void saveDefaultLocation()
     {
         //variables
@@ -623,6 +547,7 @@ public class MainActivity extends AppCompatActivity {
         //null check
         if(defaultLocation.equals("Null") || defaultLocation.equals(""))
         {
+            //save empty default location to shared preferences
             sharedPref.edit().putString("defaultLocation", "").apply();
         }
         else if(!defaultLocation.equals("Null"))
@@ -643,6 +568,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
     public String getDefaultLocation()
     {
         //variables
@@ -656,6 +582,7 @@ public class MainActivity extends AppCompatActivity {
         return dl;
     }
 
+
     public void clearSharedPreferences()
     {
         //variables
@@ -668,74 +595,70 @@ public class MainActivity extends AppCompatActivity {
 
     @Override protected void onCreate(Bundle savedInstanceState)
     {
+        //on create
         super.onCreate(savedInstanceState);
 
         //load startup activity
         setContentView(R.layout.activity_main);
 
-        //variables
+        //set widgets
         editTextEnterWeatherLocation = findViewById(R.id.editTextEnterWeatherLocation);
         textViewDisplayWeatherInfo = findViewById(R.id.textViewDisplayWeatherInfo);
         editTextTab2 = findViewById(R.id.editTextTab2);
-        //buttonWeatherInfo = findViewById(R.id.buttonWeatherInfo);
 
-        //set main background image
-        //getWindow().setBackgroundDrawableResource(R.drawable.mainbackground);
-
-        //set error message location not found as toast
+        //set error message (location not found)
         toastLocationNotFound = Toast.makeText(getApplicationContext(), "Location not found", Toast.LENGTH_SHORT);
 
-        //set tab2 default location
-        //clearSharedPreferences();
+        //set default location
         String defaultLocation = getDefaultLocation();
 
+        //fetch default location data
         if(defaultLocation.equals("") || defaultLocation.equals("Null"))
-        {
-            //do nothing
-        }
+            { /* do nothing */ }
         else
-        {
-            editTextTab2.setText(defaultLocation);
-
-            //load default location weather data
-            fetchDefaultLocationData(defaultLocation);
-        }
+            { editTextTab2.setText(defaultLocation); fetchDefaultLocationData(defaultLocation);}
 
 
-        //set listener for weather location on keyboard done
+        //set listener 1 (search weather location on keyboard done)
         editTextEnterWeatherLocation.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE)
-                { fetchWeatherData(v); }
+                    { fetchWeatherData(v); }
                 else
-                { return false; }
+                    { return false; }
+
+                //return value
                 return false;
             }
         });
 
-        //set listener for weather location on click
+        //set listener 2 (search weather location on click)
         editTextEnterWeatherLocation.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
-                //clear enter weather location text
-                editTextEnterWeatherLocation.getText().clear();
-                //editTextEnterWeatherLocation.setText("");
+                editTextEnterWeatherLocation.getText().clear(); //clear enter weather location text
             }
         });
 
+        //set listener 3 (default weather location on keyboard done)
         editTextTab2.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE)
-                {
-                    System.out.println("Tab 2 Edit Text Test");
-                    saveDefaultLocation();
-                }
+                    { saveDefaultLocation(); }
                 else
-                { return false; }
+                    { return false; }
+
+                //return value
                 return false;
             }
         });
-    }
 
+        //set listener 4 (default weather location on click)
+        editTextTab2.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View v) {
+                editTextTab2.getText().clear(); //clear default weather location text
+            }
+        });
+    }
 
 
     //async download class
@@ -756,19 +679,18 @@ public class MainActivity extends AppCompatActivity {
                 InputStreamReader inputReader = new InputStreamReader(inputStream);
                 int data = inputReader.read();
 
-                //process  data
-                while (data != -1)
-                {
-                    char current = (char) data;
-                    result += current;
-                    data = inputReader.read();
-                }
+                //process data
+                while (data != -1) { char current = (char) data; result += current; data = inputReader.read(); }
 
+                //return value
                 return result;
             }
             catch (Exception e)
             {
+                //debugging
                 e.printStackTrace();
+
+                //return value
                 return null;
             }
         }
