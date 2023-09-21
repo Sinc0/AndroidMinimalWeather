@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     String weatherLocation;
     String temperature;
     String downloadUrl;
-    String API_Key = "f394e4fb836c1332f30df5d91d30d9ab";
+    String API_Key = "";
     String API_URL_Forecast = "https://api.openweathermap.org/data/2.5/forecast?q=";
     String API_URL_Weather = "https://api.openweathermap.org/data/2.5/weather?q=";
 
