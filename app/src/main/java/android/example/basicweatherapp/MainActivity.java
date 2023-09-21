@@ -120,8 +120,9 @@ public class MainActivity extends AppCompatActivity {
 
         //set formatted string
         formattedString = String.valueOf(temperature);
-        if(formattedString.length() == 4) { formattedString = String.valueOf(temperature).substring(0, 2) + "°"; }
-        else if(formattedString.length() == 3) { formattedString = String.valueOf(temperature).substring(0, 1) + "°"; }
+        if(formattedString.length() == 4) { formattedString = String.valueOf(temperature).substring(0, 2); }
+        else if(formattedString.length() == 3) { formattedString = String.valueOf(temperature).substring(0, 1); }
+        else { }
 
         //return value
         return formattedString;
@@ -237,7 +238,7 @@ public class MainActivity extends AppCompatActivity {
         if(temperature == null) { constraintLayout1.setBackgroundResource(R.drawable.mainbackground); return; }
 
         //set current temp
-        currentTemp = Integer.parseInt(temperature.substring(0, 2));
+        currentTemp = Integer.parseInt(temperature);
 
         //set background based on temperature
         if (currentTemp < 10)
@@ -353,9 +354,9 @@ public class MainActivity extends AppCompatActivity {
                 String humidityData = getHumidityFormatted(itemObj, "humidity");
                 String weatherData = getWeatherFormatted(itemObj, "weather");
 
-                if(Objects.equals(weatherData, "rain")) { weatherData = "Rainy"; }
-                else if(Objects.equals(weatherData, "clouds")) { weatherData = "Cloudy"; }
-                else if(Objects.equals(weatherData, "clear")) { weatherData = "Clear"; }
+                if(Objects.equals(weatherData, "rain")) { weatherData = "rainy"; }
+                else if(Objects.equals(weatherData, "clouds")) { weatherData = "cloudy"; }
+                else if(Objects.equals(weatherData, "clear")) { weatherData = "clear"; }
 
                 //debugging
                 //Log.i("JSON List Item " + count, itemObj);
@@ -412,28 +413,28 @@ public class MainActivity extends AppCompatActivity {
 
             //set weather info text
             weatherInfoText = "Today" +
-                "\n" + "· temp: " + todaysTemperatureData.get(0) +
-                "\n" + "· feels like: " + todaysTfeelsData.get(0) +
-                "\n" + "· range: " + todaysTminData.get(0) + " -  " + todaysTmaxData.get(todaysTmaxData.size() - 1) +
+                "\n" + "· temperature: " + todaysTemperatureData.get(0) + "°" +
+                "\n" + "· feels like: " + todaysTfeelsData.get(0) + "°" +
+                "\n" + "· range: " + todaysTminData.get(0) + "° to  " + todaysTmaxData.get(todaysTmaxData.size() - 1) + "°" +
                 //"\n" + "· humidity: " + todaysHumidityData.get(0) +
                 "\n" + "· sunrise: " + sunrise +
                 "\n" + "· sunset: " + sunset +
                 "\n" + "· weather: " + todaysWeatherData.get(0) +
                 "\n\n" + "Tomorrow" + "\n" +
-                "· " + tomorrowsTminData.get(0) + " -  " + tomorrowsTmaxData.get(tomorrowsTmaxData.size() - 1) + "\n" +
-                "· " + tomorrowsWeatherData.get(0) +
+                "· " + tomorrowsTminData.get(0) + "° to  " + tomorrowsTmaxData.get(tomorrowsTmaxData.size() - 1) + "°" +
+                " " + tomorrowsWeatherData.get(0) +
                 "\n\n" + dateIn2Days + "\n" +
-                "· " + in2DaysTminData.get(0) + " -  " + in2DaysTmaxData.get(in2DaysTmaxData.size() - 1) + "\n" +
-                "· " + in2DaysWeatherData.get(0) +
+                "· " + in2DaysTminData.get(0) + "° to  " + in2DaysTmaxData.get(in2DaysTmaxData.size() - 1) + "°" +
+                " " + in2DaysWeatherData.get(0) +
                 "\n\n" + dateIn3Days + "\n" +
-                "· " + in3DaysTminData.get(0) + " -  " + in3DaysTmaxData.get(in3DaysTmaxData.size() - 1) + "\n" +
-                "· " + in3DaysWeatherData.get(0) +
+                "· " + in3DaysTminData.get(0) + "° to  " + in3DaysTmaxData.get(in3DaysTmaxData.size() - 1) + "°" +
+                " " + in3DaysWeatherData.get(0) +
                 "\n\n" + dateIn4Days + "\n" +
-                "· " + in4DaysTminData.get(0) + " -  " + in4DaysTmaxData.get(in4DaysTmaxData.size() - 1) + "\n" +
-                "· " + in4DaysWeatherData.get(0) +
+                "· " + in4DaysTminData.get(0) + "° to  " + in4DaysTmaxData.get(in4DaysTmaxData.size() - 1) + "°" +
+                " " + in4DaysWeatherData.get(0) +
                 "\n\n" + dateIn5Days + "\n" +
-                "· " + in5DaysTminData.get(0) + " -  " + in5DaysTmaxData.get(in5DaysTmaxData.size() - 1) + "\n" +
-                "· " + in5DaysWeatherData.get(0) +
+                "· " + in5DaysTminData.get(0) + "° to  " + in5DaysTmaxData.get(in5DaysTmaxData.size() - 1) + "°" +
+                " " + in5DaysWeatherData.get(0) +
                 "\n\n\n\n";
 
             //update UI
