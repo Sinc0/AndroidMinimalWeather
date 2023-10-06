@@ -132,10 +132,10 @@ public class MainActivity extends AppCompatActivity {
     public String getDateFormatted(String value)
     {
         //variables
-        String formattedString = value.substring(6).replace("-", "/");
-        String[] split = formattedString.split("/");
-        String part1 = split[0];
-        String part2 = split[1];
+        String formattedString = value;
+        String[] split = formattedString.split("-");
+        String part1 = split[1];
+        String part2 = split[2];
 
         //format month
         if(Objects.equals(part1, "1")) { part1 = "Jan"; }
@@ -356,6 +356,7 @@ public class MainActivity extends AppCompatActivity {
 
                 if(Objects.equals(weatherData, "rain")) { weatherData = "rainy"; }
                 else if(Objects.equals(weatherData, "clouds")) { weatherData = "cloudy"; }
+                else if(Objects.equals(weatherData, "snow")) { weatherData = "snowy"; }
                 else if(Objects.equals(weatherData, "clear")) { weatherData = "clear"; }
 
                 //debugging
