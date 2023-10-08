@@ -1,4 +1,4 @@
-# Minimal Weather App
+# Minimal Weather
 - Description: Check Weather
 - LoC: ~900
 - [Logo]()
