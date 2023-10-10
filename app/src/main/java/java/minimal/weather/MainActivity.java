@@ -1,5 +1,5 @@
 //namespace
-package android.example.basicweatherapp;
+package java.minimal.weather;
 
 //includes
 import androidx.appcompat.app.AppCompatActivity;
@@ -65,16 +65,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void fetchDefaultLocationData(String defaultLocation)
+    public void fetchStartupLocationData(String startupLocation)
     {
         //get weather location from textbox
-        weatherLocation = defaultLocation;
+        weatherLocation = startupLocation;
 
         //set download url
         downloadUrl = API_URL_Forecast + weatherLocation + "&appid=" + API_Key; //download url 1
 
         //start async data download
         new DownloadTask().execute(downloadUrl);
+
+        //update UI
+        changeToTab1(findViewById(R.id.constraintLayout1));
     }
 
 
@@ -539,43 +542,44 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void saveDefaultLocation()
+    public void setStartupLocation()
     {
         //variables
-        String defaultLocation;
-        SharedPreferences sharedPref = MainActivity.this.getPreferences(Context.MODE_PRIVATE); //getActivity().getPreferences(Context.MODE_PRIVATE);
-        defaultLocation = editTextTab2.getText().toString();
+        String startupLocation;
+        SharedPreferences sharedPref = MainActivity.this.getPreferences(Context.MODE_PRIVATE);
+        startupLocation = editTextTab2.getText().toString();
 
         //null check
-        if(defaultLocation.equals("Null") || defaultLocation.equals(""))
+        if(startupLocation.equals("Null") || startupLocation.equals(""))
         {
             //save empty default location to shared preferences
-            sharedPref.edit().putString("defaultLocation", "").apply();
+            sharedPref.edit().putString("startupLocation", "").apply();
         }
-        else if(!defaultLocation.equals("Null"))
+
+        //save default location
+        else if(!startupLocation.equals("Null"))
         {
-            //format string
-            defaultLocation = defaultLocation.substring(0, 1).toUpperCase() + defaultLocation.substring(1);
+            //format location string
+            startupLocation = startupLocation.trim().substring(0, 1).toUpperCase() + startupLocation.trim().substring(1);
 
             //save default location to shared preferences
-            sharedPref.edit().putString("defaultLocation", defaultLocation).apply();
+            sharedPref.edit().putString("startupLocation", startupLocation).apply();
 
             //get default location from shard preferences
-            String dl = sharedPref.getString("defaultLocation", "");
+            String dl = sharedPref.getString("startupLocation", "");
 
             //update UI
             editTextTab2.setText(dl);
-
-            //fetchDefaultLocationData(defaultLocation);
+            //fetchStartupLocationData(startupLocation);
         }
     }
 
 
-    public String getDefaultLocation()
+    public String getStartupLocation()
     {
         //variables
         SharedPreferences sharedPref = MainActivity.this.getPreferences(Context.MODE_PRIVATE);
-        String dl = sharedPref.getString("defaultLocation", "");
+        String dl = sharedPref.getString("startupLocation", "");
 
         //debugging
         //Log.i("Default Location", dl);
@@ -612,13 +616,13 @@ public class MainActivity extends AppCompatActivity {
         toastLocationNotFound = Toast.makeText(getApplicationContext(), "Location not found", Toast.LENGTH_SHORT);
 
         //set default location
-        String defaultLocation = getDefaultLocation();
+        String startupLocation = getStartupLocation();
 
         //fetch default location data
-        if(defaultLocation.equals("") || defaultLocation.equals("Null"))
+        if(startupLocation.equals("") || startupLocation.equals("Null"))
             { /* do nothing */ }
         else
-            { editTextTab2.setText(defaultLocation); fetchDefaultLocationData(defaultLocation);}
+            { editTextTab2.setText(startupLocation); fetchStartupLocationData(startupLocation);}
 
 
         //set listener 1 (search weather location on keyboard done)
@@ -645,7 +649,7 @@ public class MainActivity extends AppCompatActivity {
         editTextTab2.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE)
-                    { saveDefaultLocation(); }
+                    { setStartupLocation(); }
                 else
                     { return false; }
 
