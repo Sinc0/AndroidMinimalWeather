@@ -12,7 +12,7 @@
     tools:context=".MainActivity">
     <!-- android:background="#FFFFFF" -->
 
-    <!-- Tab 1 -->
+    <!-- Tab 1: Weather -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout1"
         android:layout_width="match_parent"
@@ -90,7 +90,7 @@
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!-- Tab 2 -->
+    <!-- Tab 2: Settings -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout2"
         android:layout_width="match_parent"
@@ -151,7 +151,7 @@
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!-- Tab 3 -->
+    <!-- Tab 3: About -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout3"
         android:layout_width="match_parent"
@@ -280,7 +280,7 @@
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!-- Bottom Button Menu -->
+    <!-- Bottom Menu -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="80dp"
@@ -335,6 +335,6 @@
             android:textColor="@android:color/white"
             android:textSize="26sp"
             android:textStyle="bold" />
-
     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

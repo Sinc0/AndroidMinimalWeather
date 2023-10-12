@@ -31,8 +31,8 @@
 - [XML - Tab 1 Weather](https://github.com/Sinc0/AndroidMinimalWeather/blob/master/app/src/main/res/layout/activity_main.xml#L15-L91)
 - [XML - Tab 2 - Settings](https://github.com/Sinc0/AndroidMinimalWeather/blob/master/app/src/main/res/layout/activity_main.xml#L93-L152)
 - [XML - Tab 3 - About](https://github.com/Sinc0/AndroidMinimalWeather/blob/master/app/src/main/res/layout/activity_main.xml#L154-L281)
-- [XML - Change Tab Menu](https://github.com/Sinc0/AndroidMinimalWeather/blob/master/app/src/main/res/layout/activity_main.xml#L283-L340)
+- [XML - Change Tab Menu](https://github.com/Sinc0/AndroidMinimalWeather/blob/master/app/src/main/res/layout/activity_main.xml#L283-L338)
 
 ### Releases
-- [Android]()
+- [Android](https://github.com/Sinc0/AndroidMinimalWeather/releases/download/1.0.1/unsigned-jmw-1.0.1.apk)
 

@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         weatherLocation = editTextEnterWeatherLocation.getText().toString(); //weather location from textbox
 
         //set download url
-        downloadUrl = API_URL_Forecast + weatherLocation + "&appid=" + API_Key; //download url 1
+        downloadUrl = API_URL_Forecast + weatherLocation + "&appid=" + API_Key;
 
         //start async data download
         new DownloadTask().execute(downloadUrl);
@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
         weatherLocation = startupLocation;
 
         //set download url
-        downloadUrl = API_URL_Forecast + weatherLocation + "&appid=" + API_Key; //download url 1
+        downloadUrl = API_URL_Forecast + weatherLocation + "&appid=" + API_Key;
 
         //start async data download
         new DownloadTask().execute(downloadUrl);
@@ -244,12 +244,12 @@ public class MainActivity extends AppCompatActivity {
         currentTemp = Integer.parseInt(temperature);
 
         //set background based on temperature
-        if (currentTemp < 10)
-            { constraintLayout1.setBackgroundResource(R.drawable.cold); } //temp below 10 = cold
-        else if (currentTemp >= 10 && currentTemp <= 26)
-            { constraintLayout1.setBackgroundResource(R.drawable.mainbackground); } //temp between 10 and 26 = normal
-        else if (currentTemp > 26)
-            { constraintLayout1.setBackgroundResource(R.drawable.sun); } //temp above 26 = hot
+        if (currentTemp < 10) //temp below 10 = cold
+            { constraintLayout1.setBackgroundResource(R.drawable.cold); }
+        else if (currentTemp >= 10 && currentTemp <= 26) //temp between 10 and 26 = normal
+            { constraintLayout1.setBackgroundResource(R.drawable.mainbackground); }
+        else if (currentTemp > 26) //temp above 26 = hot
+            { constraintLayout1.setBackgroundResource(R.drawable.sun); }
     }
 
 
