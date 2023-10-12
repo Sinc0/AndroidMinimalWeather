@@ -4,10 +4,10 @@
 - LoC: ~900
 - [Logo](https://github.com/Sinc0/AndroidMinimalWeather/blob/master/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png)
 - Features:
-- \- search for specific location
-- \- set startup location
-- \- check current weather
-- \- check 5 day weather forecast
+- \--- search for specific location
+- \--- set startup location
+- \--- check current weather
+- \--- check 5 day weather forecast
 
 ### Technologies
 - [Java](https://www.java.com/en/)
