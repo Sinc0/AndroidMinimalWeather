@@ -4,10 +4,10 @@ android {
     compileSdkVersion 34
     defaultConfig {
         applicationId "official.jmw.app"
-        minSdkVersion 16
+        minSdkVersion 24
         targetSdkVersion 34
-        versionCode 2
-        versionName "1.0.1"
+        versionCode 3
+        versionName "1.0.2"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

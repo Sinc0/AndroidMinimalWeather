@@ -26,7 +26,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -112,9 +112,9 @@ public class MainActivity extends AppCompatActivity {
 
         //check type
         if(type == "temp") { formattedString = main.getString("temp"); }
+        else if(type == "tfeels_like") { formattedString = main.getString("feels_like"); }
         else if(type == "tmin") { formattedString = main.getString("temp_min"); }
         else if(type == "tmax") { formattedString = main.getString("temp_max"); }
-        else if(type == "tfeels_like") { formattedString = main.getString("feels_like"); }
 
         //convert from kelvin to celsius
         temperature = Double.valueOf(formattedString);
@@ -363,7 +363,7 @@ public class MainActivity extends AppCompatActivity {
                 else if(Objects.equals(weatherData, "clear")) { weatherData = "clear"; }
 
                 //debugging
-                //Log.i("JSON List Item " + count, itemObj);
+                //Log.i("JSON List Item ", itemObj.toString());
 
                 //add todays values
                 if (Objects.equals(itemDate, todaysDate)) {
@@ -389,18 +389,18 @@ public class MainActivity extends AppCompatActivity {
             }
 
             //sort arrays (lowest to highest)
-            Collections.sort(todaysTminData);
-            Collections.sort(todaysTmaxData);
-            Collections.sort(tomorrowsTminData);
-            Collections.sort(tomorrowsTmaxData);
-            Collections.sort(in2DaysTminData);
-            Collections.sort(in2DaysTmaxData);
-            Collections.sort(in3DaysTminData);
-            Collections.sort(in3DaysTmaxData);
-            Collections.sort(in4DaysTminData);
-            Collections.sort(in4DaysTmaxData);
-            Collections.sort(in5DaysTminData);
-            Collections.sort(in5DaysTmaxData);
+            todaysTminData.sort(Comparator.comparing(Integer::parseInt));
+            todaysTmaxData.sort(Comparator.comparing(Integer::parseInt));
+            tomorrowsTminData.sort(Comparator.comparing(Integer::parseInt));
+            tomorrowsTmaxData.sort(Comparator.comparing(Integer::parseInt));
+            in2DaysTminData.sort(Comparator.comparing(Integer::parseInt));
+            in2DaysTmaxData.sort(Comparator.comparing(Integer::parseInt));
+            in3DaysTminData.sort(Comparator.comparing(Integer::parseInt));
+            in3DaysTmaxData.sort(Comparator.comparing(Integer::parseInt));
+            in4DaysTminData.sort(Comparator.comparing(Integer::parseInt));
+            in4DaysTmaxData.sort(Comparator.comparing(Integer::parseInt));
+            in5DaysTminData.sort(Comparator.comparing(Integer::parseInt));
+            in5DaysTmaxData.sort(Comparator.comparing(Integer::parseInt));
 
             //set date strings
             dateIn2Days = getDateFormatted(dateIn2Days); //set formatted date string
@@ -419,25 +419,25 @@ public class MainActivity extends AppCompatActivity {
             weatherInfoText = "Today" +
                 "\n" + "· temperature: " + todaysTemperatureData.get(0) + "°" +
                 "\n" + "· feels like: " + todaysTfeelsData.get(0) + "°" +
-                "\n" + "· range: " + todaysTminData.get(0) + "° to  " + todaysTmaxData.get(todaysTmaxData.size() - 1) + "°" +
-                //"\n" + "· humidity: " + todaysHumidityData.get(0) +
+                "\n" + "· range: " + todaysTminData.get(0) + "° to  " + todaysTmaxData.get(todaysTmaxData.size() -1) + "°" +
+                "\n" + "· humidity: " + todaysHumidityData.get(0) +
                 "\n" + "· sunrise: " + sunrise +
                 "\n" + "· sunset: " + sunset +
                 "\n" + "· weather: " + todaysWeatherData.get(0) +
                 "\n\n" + "Tomorrow" + "\n" +
-                "· " + tomorrowsTminData.get(0) + "° to  " + tomorrowsTmaxData.get(tomorrowsTmaxData.size() - 1) + "°" +
+                "· " + tomorrowsTminData.get(0) + "° to  " + tomorrowsTmaxData.get(tomorrowsTmaxData.size() -1) + "°" +
                 " " + tomorrowsWeatherData.get(0) +
                 "\n\n" + dateIn2Days + "\n" +
-                "· " + in2DaysTminData.get(0) + "° to  " + in2DaysTmaxData.get(in2DaysTmaxData.size() - 1) + "°" +
+                "· " + in2DaysTminData.get(0) + "° to  " + in2DaysTmaxData.get(in2DaysTmaxData.size() -1) + "°" +
                 " " + in2DaysWeatherData.get(0) +
                 "\n\n" + dateIn3Days + "\n" +
-                "· " + in3DaysTminData.get(0) + "° to  " + in3DaysTmaxData.get(in3DaysTmaxData.size() - 1) + "°" +
+                "· " + in3DaysTminData.get(0) + "° to  " + in3DaysTmaxData.get(in3DaysTmaxData.size() -1) + "°" +
                 " " + in3DaysWeatherData.get(0) +
                 "\n\n" + dateIn4Days + "\n" +
-                "· " + in4DaysTminData.get(0) + "° to  " + in4DaysTmaxData.get(in4DaysTmaxData.size() - 1) + "°" +
+                "· " + in4DaysTminData.get(0) + "° to  " + in4DaysTmaxData.get(in4DaysTmaxData.size() -1) + "°" +
                 " " + in4DaysWeatherData.get(0) +
                 "\n\n" + dateIn5Days + "\n" +
-                "· " + in5DaysTminData.get(0) + "° to  " + in5DaysTmaxData.get(in5DaysTmaxData.size() - 1) + "°" +
+                "· " + in5DaysTminData.get(0) + "° to  " + in5DaysTmaxData.get(in5DaysTmaxData.size() -1) + "°" +
                 " " + in5DaysWeatherData.get(0) +
                 "\n\n\n\n";
 
