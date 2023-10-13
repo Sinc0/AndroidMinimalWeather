@@ -34,5 +34,5 @@
 - [XML - Change Tab Menu](https://github.com/Sinc0/AndroidMinimalWeather/blob/master/app/src/main/res/layout/activity_main.xml#L283-L338)
 
 ### Releases
-- [Android](https://github.com/Sinc0/AndroidMinimalWeather/releases/download/1.0.1/unsigned-jmw-1.0.1.apk)
+- [Android](https://github.com/Sinc0/AndroidMinimalWeather/releases/download/1.0.2/unsigned-jmw-1.0.2.apk)
 
