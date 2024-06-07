@@ -3,11 +3,12 @@
 - Description: Check current weather and forecast
 - LoC: ~900
 - [Logo](https://github.com/Sinc0/AndroidMinimalWeather/blob/master/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png)
-- Features:
-- \--- search for specific location
-- \--- set startup location
-- \--- check current weather
-- \--- check 5 day weather forecast
+
+### Features
+- Search for specific location
+- Set startup location
+- Check current weather
+- Check 5 day weather forecast
 
 ### Technologies
 - [Java](https://www.java.com/en/)
@@ -29,8 +30,8 @@
 - [Java - Load Startup Location](https://github.com/Sinc0/AndroidMinimalWeather/blob/master/app/src/main/java/java/minimal/weather/MainActivity.java#L68-L81)
 - [Java - Set Background Image](https://github.com/Sinc0/AndroidMinimalWeather/blob/master/app/src/main/java/java/minimal/weather/MainActivity.java#L234-L253)
 - [Java - Change Tab](https://github.com/Sinc0/AndroidMinimalWeather/blob/master/app/src/main/java/java/minimal/weather/MainActivity.java#L464-L542)
-- [XML - Tab 1 Weather](https://github.com/Sinc0/AndroidMinimalWeather/blob/master/app/src/main/res/layout/activity_main.xml#L15-L91)
 ###
+- [XML - Tab 1 Weather](https://github.com/Sinc0/AndroidMinimalWeather/blob/master/app/src/main/res/layout/activity_main.xml#L15-L91)
 - [XML - Tab 2 - Settings](https://github.com/Sinc0/AndroidMinimalWeather/blob/master/app/src/main/res/layout/activity_main.xml#L93-L152)
 - [XML - Tab 3 - About](https://github.com/Sinc0/AndroidMinimalWeather/blob/master/app/src/main/res/layout/activity_main.xml#L154-L281)
 - [XML - Change Tab Menu](https://github.com/Sinc0/AndroidMinimalWeather/blob/master/app/src/main/res/layout/activity_main.xml#L283-L338)
