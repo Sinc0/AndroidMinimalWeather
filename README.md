@@ -3,12 +3,11 @@
 - Description: Check current weather and forecast
 - LoC: ~900
 - [Logo](https://github.com/Sinc0/AndroidMinimalWeather/blob/master/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png)
-
-### Features
-- Search for specific location
-- Set startup location
-- Check current weather
-- Check 5 day weather forecast
+- Features:
+- \--- search for specific location
+- \--- set startup location
+- \--- check current weather
+- \--- check 5 day weather forecast
 
 ### Technologies
 - [Java](https://www.java.com/en/)
