@@ -141,15 +141,15 @@ public class MainActivity extends AppCompatActivity {
         String part2 = split[2];
 
         //format month
-        if(Objects.equals(part1, "1")) { part1 = "Jan"; }
-        else if(Objects.equals(part1, "2")) { part1 = "Feb"; }
-        else if(Objects.equals(part1, "3")) { part1 = "Mar"; }
-        else if(Objects.equals(part1, "4")) { part1 = "Apr"; }
-        else if(Objects.equals(part1, "5")) { part1 = "May"; }
-        else if(Objects.equals(part1, "6")) { part1 = "Jun"; }
-        else if(Objects.equals(part1, "7")) { part1 = "Jul"; }
-        else if(Objects.equals(part1, "8")) { part1 = "Aug"; }
-        else if(Objects.equals(part1, "9")) { part1 = "Sep"; }
+        if(Objects.equals(part1, "01")) { part1 = "Jan"; }
+        else if(Objects.equals(part1, "02")) { part1 = "Feb"; }
+        else if(Objects.equals(part1, "03")) { part1 = "Mar"; }
+        else if(Objects.equals(part1, "04")) { part1 = "Apr"; }
+        else if(Objects.equals(part1, "05")) { part1 = "May"; }
+        else if(Objects.equals(part1, "06")) { part1 = "Jun"; }
+        else if(Objects.equals(part1, "07")) { part1 = "Jul"; }
+        else if(Objects.equals(part1, "08")) { part1 = "Aug"; }
+        else if(Objects.equals(part1, "09")) { part1 = "Sep"; }
         else if(Objects.equals(part1, "10")) { part1 = "Oct"; }
         else if(Objects.equals(part1, "11")) { part1 = "Nov"; }
         else if(Objects.equals(part1, "12")) { part1 = "Dec"; }
