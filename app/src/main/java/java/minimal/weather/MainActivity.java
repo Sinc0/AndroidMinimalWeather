@@ -123,11 +123,11 @@ public class MainActivity extends AppCompatActivity {
 
         //set formatted string
         formattedString = String.valueOf(temperature);
-        if(formattedString.length() == 4) { formattedString = String.valueOf(temperature).substring(0, 2); }
+        if(formattedString.length() == 5) { formattedString = String.valueOf(temperature).substring(0, 3); }
+        else if(formattedString.length() == 4) { formattedString = String.valueOf(temperature).substring(0, 2); }
         else if(formattedString.length() == 3) { formattedString = String.valueOf(temperature).substring(0, 1); }
         else { }
 
-        //return value
         return formattedString;
     }
 
